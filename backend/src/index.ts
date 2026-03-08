@@ -20,17 +20,11 @@ app.use(cookieParser());
 connectDB();
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/queue", queueRoutes);
+app.use("/auth", authRoutes);
+app.use("/queue", queueRoutes);
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
 
 export default app;
