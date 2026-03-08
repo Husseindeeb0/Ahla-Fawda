@@ -32,6 +32,26 @@ export const queueApi = createApi({
     getQueueStatus: builder.query<QueueStatus, void>({
       query: () => "/status",
       providesTags: ["Queue"],
+      async onCacheEntryAdded(
+        _arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        // Import socket dynamically to avoid issues with some build setups,
+        // or ensure it's imported at the top.
+        const { socket } = await import("../../utils/socket");
+
+        try {
+          await cacheDataLoaded;
+
+          socket.on("queueUpdated", (data: QueueStatus) => {
+            updateCachedData((draft) => {
+              Object.assign(draft, data);
+            });
+          });
+        } catch {}
+        await cacheEntryRemoved;
+        socket.off("queueUpdated");
+      },
     }),
     takeNumber: builder.mutation<Ticket, void>({
       query: () => ({
@@ -43,6 +63,34 @@ export const queueApi = createApi({
     getMyTicket: builder.query<Ticket | null, void>({
       query: () => "/my-ticket",
       providesTags: ["Ticket"],
+      async onCacheEntryAdded(
+        _arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState },
+      ) {
+        const { socket } = await import("../../utils/socket");
+        try {
+          await cacheDataLoaded;
+
+          // Get user ID from auth state if possible or wait for the first socket event
+          // For simplicity, we can listen for specific events if we had the ID here,
+          // but better yet, let the ticket controller emit the update.
+          // In a more complex app, we might store the user ID in the auth slice.
+          const userId = (getState() as any).auth?.user?.id;
+
+          if (userId) {
+            socket.on(`ticketUpdated:${userId}`, (data: Ticket | null) => {
+              updateCachedData(() => data);
+            });
+          }
+
+          socket.on("ticketUpdated:all", () => {
+            updateCachedData(() => null);
+          });
+        } catch {}
+        await cacheEntryRemoved;
+        socket.off("ticketUpdated:all");
+        // Clean up individual user listener if we had the ID
+      },
     }),
 
     // Admin endpoints

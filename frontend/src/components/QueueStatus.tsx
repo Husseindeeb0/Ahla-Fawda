@@ -3,9 +3,7 @@ import { useGetQueueStatusQuery } from "../state/services/queueApi";
 import { FaClock, FaUserTag, FaCircle } from "react-icons/fa";
 
 const QueueStatus: React.FC = () => {
-  const { data, isLoading, error } = useGetQueueStatusQuery(undefined, {
-    pollingInterval: 3000, // Poll every 3 seconds for real-time feel
-  });
+  const { data, isLoading, error } = useGetQueueStatusQuery();
 
   if (isLoading)
     return (

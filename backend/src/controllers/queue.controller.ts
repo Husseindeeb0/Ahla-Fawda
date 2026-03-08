@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Queue, Ticket } from "../models/queue.model";
 import { User } from "../models/User";
+import { emitQueueUpdate, emitTicketUpdate } from "../utils/socket";
 
 interface AuthRequest extends Request {
   user?: {
@@ -66,6 +67,9 @@ export const takeNumber = async (req: AuthRequest, res: Response) => {
     user.savedNumber = queue.lastIssuedNumber;
     await user.save();
 
+    emitQueueUpdate(queue);
+    emitTicketUpdate(userId, ticket);
+
     res.status(201).json(ticket);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -88,9 +92,14 @@ export const incrementNumber = async (req: Request, res: Response) => {
         { number: queue.currentNumber, status: "waiting" },
         { status: "called" },
       );
-    }
 
-    res.json(queue);
+      emitQueueUpdate(queue);
+      res.json(queue);
+    } else {
+      res
+        .status(400)
+        .json({ message: "لا يوجد المزيد من الأشخاص في الانتظار" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -114,6 +123,7 @@ export const decrementNumber = async (req: Request, res: Response) => {
       await queue.save();
     }
 
+    emitQueueUpdate(queue);
     res.json(queue);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -130,6 +140,7 @@ export const toggleBookings = async (req: Request, res: Response) => {
     queue.isBookingsOpen = !queue.isBookingsOpen;
     await queue.save();
 
+    emitQueueUpdate(queue);
     res.json(queue);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -153,6 +164,10 @@ export const resetQueue = async (req: Request, res: Response) => {
 
     // Reset savedNumber for all users
     await User.updateMany({}, { savedNumber: null });
+
+    emitQueueUpdate(queue);
+    // Notify all users their tickets are gone
+    emitTicketUpdate("all", null);
 
     res.json({ message: "Queue reset successfully" });
   } catch (error: any) {
