@@ -12,7 +12,8 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"]
 }
