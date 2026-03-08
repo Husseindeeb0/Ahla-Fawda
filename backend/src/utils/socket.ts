@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { Server as HttpServer } from "http";
 
 let io: Server;
@@ -6,13 +6,13 @@ let io: Server;
 export const initSocket = (httpServer: HttpServer) => {
   io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173", // Update with your frontend URL
+      origin: "*", // Allow all origins for simplicity in production or use an array
       methods: ["GET", "POST", "PATCH"],
       credentials: true,
     },
   });
 
-  io.on("connection", (socket) => {
+  io.on("connection", (socket: Socket) => {
     console.log(`User connected: ${socket.id}`);
 
     socket.on("disconnect", () => {
