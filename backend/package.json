@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@types/node": "^25.3.5",
-    "@types/socket.io": "^3.0.1",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
