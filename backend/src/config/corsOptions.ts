@@ -2,6 +2,7 @@ import cors from "cors";
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://ahla-fawda-h.vercel.app",
 ];
 
 const corsOptions: cors.CorsOptions = {
