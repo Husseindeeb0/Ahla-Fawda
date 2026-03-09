@@ -7,7 +7,7 @@ let io: Server;
 export const initSocket = (httpServer: HttpServer) => {
   io = new Server(httpServer, {
     cors: {
-      origin: "*", // Allow all origins for simplicity in production or use an array
+      origin: ["http://localhost:5173", "https://ahla-fawda-h.vercel.app"],
       methods: ["GET", "POST", "PATCH"],
       credentials: true,
     },
