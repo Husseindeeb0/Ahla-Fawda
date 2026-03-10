@@ -128,7 +128,32 @@ export const queueApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Queue"],
+      invalidatesTags: ["Queue", "Ticket"],
+    }),
+    getAllTickets: builder.query<Ticket[], void>({
+      query: () => "/all-tickets",
+      providesTags: ["Ticket"],
+      async onCacheEntryAdded(
+        _arg,
+        { dispatch, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        const { socket } = await import("../../utils/socket");
+        try {
+          await cacheDataLoaded;
+          socket.on("ticketsUpdated", () => {
+            dispatch(queueApi.util.invalidateTags(["Ticket"]));
+          });
+        } catch {}
+        await cacheEntryRemoved;
+        socket.off("ticketsUpdated");
+      },
+    }),
+    adminRemoveTicket: builder.mutation<{ message: string }, string>({
+      query: (ticketId) => ({
+        url: `/ticket/${ticketId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Ticket"],
     }),
   }),
 });
@@ -142,4 +167,6 @@ export const {
   useResetQueueMutation,
   useGetMyTicketQuery,
   useAdminCreateTicketMutation,
+  useGetAllTicketsQuery,
+  useAdminRemoveTicketMutation,
 } = queueApi;

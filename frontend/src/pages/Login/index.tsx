@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await login(formData).unwrap();
-      navigate("/");
+      navigate("/home");
       window.location.reload();
     } catch (err) {
       console.error("Login failed:", err);

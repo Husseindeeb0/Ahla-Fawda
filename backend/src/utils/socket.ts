@@ -42,3 +42,9 @@ export const emitTicketUpdate = (userId: string, data: any) => {
     io.emit(`ticketUpdated:${userId}`, data);
   }
 };
+
+export const emitTicketsUpdated = () => {
+  if (io) {
+    io.emit("ticketsUpdated");
+  }
+};

@@ -17,7 +17,7 @@ const Signup: React.FC = () => {
     e.preventDefault();
     try {
       await signup(formData).unwrap();
-      navigate("/");
+      navigate("/home");
       window.location.reload();
     } catch (err) {
       console.error("Signup failed:", err);

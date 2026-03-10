@@ -8,6 +8,8 @@ import {
   resetQueue,
   getMyTicket,
   adminCreateTicket,
+  getAllTickets,
+  adminRemoveTicket,
 } from "../controllers/queue.controller";
 import { verifyToken, isAdmin } from "../middleware/auth.middleware";
 
@@ -23,5 +25,7 @@ router.patch("/decrement", verifyToken, isAdmin, decrementNumber);
 router.patch("/toggle-bookings", verifyToken, isAdmin, toggleBookings);
 router.post("/reset", verifyToken, isAdmin, resetQueue);
 router.post("/admin-ticket", verifyToken, isAdmin, adminCreateTicket);
+router.get("/all-tickets", verifyToken, isAdmin, getAllTickets);
+router.delete("/ticket/:ticketId", verifyToken, isAdmin, adminRemoveTicket);
 
 export default router;

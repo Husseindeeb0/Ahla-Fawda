@@ -8,7 +8,14 @@ export interface Ticket {
   _id: string;
   number: number;
   status: "waiting" | "called" | "finished";
-  userId: string | null;
+  userId:
+    | string
+    | {
+        _id: string;
+        name: string;
+        email: string;
+      }
+    | null;
   createdByAdmin: boolean;
   customerName: string | null;
   createdAt: string;

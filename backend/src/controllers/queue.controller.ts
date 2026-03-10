@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { Queue, Ticket } from "../models/queue.model";
 import { User } from "../models/User";
-import { emitQueueUpdate, emitTicketUpdate } from "../utils/socket";
+import {
+  emitQueueUpdate,
+  emitTicketUpdate,
+  emitTicketsUpdated,
+} from "../utils/socket";
 
 interface AuthRequest extends Request {
   user?: {
@@ -69,6 +73,7 @@ export const takeNumber = async (req: AuthRequest, res: Response) => {
 
     emitQueueUpdate(queue);
     emitTicketUpdate(userId, ticket);
+    emitTicketsUpdated();
 
     res.status(201).json(ticket);
   } catch (error: any) {
@@ -88,12 +93,18 @@ export const incrementNumber = async (req: Request, res: Response) => {
       await queue.save();
 
       // Update the ticket status to 'called'
-      await Ticket.findOneAndUpdate(
+      const ticket = await Ticket.findOneAndUpdate(
         { number: queue.currentNumber, status: "waiting" },
         { status: "called" },
+        { new: true },
       );
 
+      if (ticket && ticket.userId) {
+        emitTicketUpdate(ticket.userId.toString(), ticket);
+      }
+
       emitQueueUpdate(queue);
+      emitTicketsUpdated();
       res.json(queue);
     } else {
       res
@@ -114,16 +125,22 @@ export const decrementNumber = async (req: Request, res: Response) => {
 
     if (queue.currentNumber > 0) {
       // Find the ticket being unset and change it back to 'waiting'
-      await Ticket.findOneAndUpdate(
+      const ticket = await Ticket.findOneAndUpdate(
         { number: queue.currentNumber, status: "called" },
         { status: "waiting" },
+        { new: true },
       );
+
+      if (ticket && ticket.userId) {
+        emitTicketUpdate(ticket.userId.toString(), ticket);
+      }
 
       queue.currentNumber -= 1;
       await queue.save();
     }
 
     emitQueueUpdate(queue);
+    emitTicketsUpdated();
     res.json(queue);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -168,6 +185,7 @@ export const resetQueue = async (req: Request, res: Response) => {
     emitQueueUpdate(queue);
     // Notify all users their tickets are gone
     emitTicketUpdate("all", null);
+    emitTicketsUpdated();
 
     res.json({ message: "Queue reset successfully" });
   } catch (error: any) {
@@ -217,8 +235,44 @@ export const adminCreateTicket = async (req: AuthRequest, res: Response) => {
     });
 
     emitQueueUpdate(queue);
+    emitTicketsUpdated();
 
     res.status(201).json(ticket);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllTickets = async (req: Request, res: Response) => {
+  try {
+    const tickets = await Ticket.find()
+      .populate("userId", "name email")
+      .sort({ number: 1 });
+    res.json(tickets);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const adminRemoveTicket = async (req: Request, res: Response) => {
+  try {
+    const { ticketId } = req.params;
+    const ticket = await Ticket.findById(ticketId);
+
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+
+    // If it's a regular user ticket, clear their savedNumber
+    if (ticket.userId) {
+      await User.findByIdAndUpdate(ticket.userId, { savedNumber: null });
+      emitTicketUpdate(ticket.userId.toString(), null);
+    }
+
+    await Ticket.findByIdAndDelete(ticketId);
+    emitTicketsUpdated();
+
+    res.json({ message: "Ticket removed successfully" });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

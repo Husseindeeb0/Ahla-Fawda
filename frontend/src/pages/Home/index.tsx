@@ -4,9 +4,10 @@ import QueueStatus from "../../components/QueueStatus";
 import TicketAction from "../../components/TicketAction";
 import AdminControls from "../../components/AdminControls";
 import AdminTicketIssuer from "../../components/AdminTicketIssuer";
+import AdminTicketList from "../../components/AdminTicketList";
 import { useAuth } from "../../hooks/useAuth";
 
-const Home: React.FC = () => {
+const Queue: React.FC = () => {
   const { user } = useAuth();
 
   return (
@@ -14,17 +15,36 @@ const Home: React.FC = () => {
       <Header />
 
       <main className="py-12 pb-32">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-4 tracking-tight">
-            نظام حجز الأدوار الإلكتروني
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg mb-12 font-medium">
-            احجز دورك من منزلك وراقب الرقم الحالي في الوقت الفعلي. نوفر عليك
-            عناء الانتظار الطويل في المركز.
-          </p>
+        <div
+          className={`container mx-auto px-4 ${
+            user?.role === "admin"
+              ? "lg:grid lg:grid-cols-12 lg:gap-8 text-right"
+              : "text-center"
+          }`}
+          dir={user?.role === "admin" ? "rtl" : "ltr"}
+        >
+          {/* Main Column */}
+          <div className={user?.role === "admin" ? "lg:col-span-8" : "w-full"}>
+            <div className="text-center">
+              <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+                نظام حجز الأدوار الإلكتروني
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto text-lg mb-12 font-medium">
+                احجز دورك من منزلك وراقب الرقم الحالي في الوقت الفعلي. نوفر عليك
+                عناء الانتظار الطويل في المركز.
+              </p>
+            </div>
 
-          <QueueStatus />
-          <TicketAction />
+            <QueueStatus />
+            <TicketAction />
+          </div>
+
+          {/* Admin Sidebar */}
+          {user?.role === "admin" && (
+            <div className="lg:col-span-4 mt-12 lg:mt-0 animate-in fade-in slide-in-from-right-10 duration-700">
+              <AdminTicketList />
+            </div>
+          )}
         </div>
       </main>
 
@@ -44,4 +64,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Queue;

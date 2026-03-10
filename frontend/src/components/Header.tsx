@@ -33,6 +33,9 @@ const Header: React.FC = () => {
           <Link to="/" className="hover:text-red-600 transition-colors">
             الرئيسية
           </Link>
+          <Link to="/home" className="hover:text-red-600 transition-colors">
+            حالة الدور
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-3 border-l border-gray-100 pl-3 md:pl-6 h-8 justify-end">
@@ -68,7 +71,7 @@ const Header: React.FC = () => {
                 دخول
               </Link>
               <Link
-                to="/signup"
+                to="/home"
                 className="bg-red-600 text-white font-black px-4 md:px-6 py-2 md:py-2.5 rounded-xl shadow-lg shadow-red-200 hover:bg-red-700 hover:shadow-red-300 transition-all transform active:scale-95 text-xs md:text-sm whitespace-nowrap"
               >
                 احجز الآن
