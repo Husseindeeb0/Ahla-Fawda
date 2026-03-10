@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import QueueStatus from "../../components/QueueStatus";
 import TicketAction from "../../components/TicketAction";
 import AdminControls from "../../components/AdminControls";
+import AdminTicketIssuer from "../../components/AdminTicketIssuer";
 import { useAuth } from "../../hooks/useAuth";
 
 const Home: React.FC = () => {
@@ -27,7 +28,12 @@ const Home: React.FC = () => {
         </div>
       </main>
 
-      {user?.role === "admin" && <AdminControls />}
+      {user?.role === "admin" && (
+        <>
+          <AdminControls />
+          <AdminTicketIssuer />
+        </>
+      )}
 
       {/* Background decoration */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">

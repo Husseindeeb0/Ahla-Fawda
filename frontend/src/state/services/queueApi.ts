@@ -122,6 +122,14 @@ export const queueApi = createApi({
       }),
       invalidatesTags: ["Queue", "Ticket"],
     }),
+    adminCreateTicket: builder.mutation<Ticket, { customerName?: string }>({
+      query: (body) => ({
+        url: "/admin-ticket",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Queue"],
+    }),
   }),
 });
 
@@ -133,4 +141,5 @@ export const {
   useToggleBookingsMutation,
   useResetQueueMutation,
   useGetMyTicketQuery,
+  useAdminCreateTicketMutation,
 } = queueApi;

@@ -188,3 +188,38 @@ export const getMyTicket = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const adminCreateTicket = async (req: AuthRequest, res: Response) => {
+  try {
+    const { customerName } = req.body;
+
+    let queue = await Queue.findOne().sort({ createdAt: -1 });
+    if (!queue) {
+      queue = await Queue.create({
+        currentNumber: 0,
+        lastIssuedNumber: 0,
+        isBookingsOpen: true,
+      });
+    }
+
+    if (!queue.isBookingsOpen) {
+      return res.status(400).json({ message: "Bookings are currently closed" });
+    }
+
+    queue.lastIssuedNumber += 1;
+    await queue.save();
+
+    const ticket = await Ticket.create({
+      number: queue.lastIssuedNumber,
+      status: "waiting",
+      createdByAdmin: true,
+      customerName: customerName || null,
+    });
+
+    emitQueueUpdate(queue);
+
+    res.status(201).json(ticket);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

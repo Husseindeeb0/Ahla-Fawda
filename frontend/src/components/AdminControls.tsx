@@ -23,6 +23,7 @@ const AdminControls: React.FC = () => {
   const [localError, setLocalError] = useState<string | null>(null);
   const { user } = useAuth();
   const { data: status } = useGetQueueStatusQuery();
+
   const [increment, { isLoading: isIncrementing }] =
     useIncrementNumberMutation();
   const [decrement, { isLoading: isDecrementing }] =

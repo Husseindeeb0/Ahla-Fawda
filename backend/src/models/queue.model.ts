@@ -38,7 +38,15 @@ const TicketSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      default: null,
+    },
+    createdByAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    customerName: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true },
