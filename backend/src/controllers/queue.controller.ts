@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { Queue, Ticket } from "../models/queue.model";
 import { User } from "../models/User";
 import {
@@ -6,15 +5,33 @@ import {
   emitTicketUpdate,
   emitTicketsUpdated,
 } from "../utils/socket";
+import {
+  GetQueueStatusRequest,
+  GetQueueStatusResponse,
+  TakeNumberRequest,
+  TakeNumberResponse,
+  IncrementNumberRequest,
+  IncrementNumberResponse,
+  DecrementNumberRequest,
+  DecrementNumberResponse,
+  ToggleBookingsRequest,
+  ToggleBookingsResponse,
+  ResetQueueRequest,
+  ResetQueueResponse,
+  GetMyTicketRequest,
+  GetMyTicketResponse,
+  AdminCreateTicketRequest,
+  AdminCreateTicketResponse,
+  GetAllTicketsRequest,
+  GetAllTicketsResponse,
+  AdminRemoveTicketRequest,
+  AdminRemoveTicketResponse,
+} from "../types/queue.types";
 
-interface AuthRequest extends Request {
-  user?: {
-    id: string;
-    role: string;
-  };
-}
-
-export const getQueueStatus = async (req: Request, res: Response) => {
+export const getQueueStatus = async (
+  req: GetQueueStatusRequest,
+  res: GetQueueStatusResponse,
+) => {
   try {
     let queue = await Queue.findOne().sort({ createdAt: -1 });
     if (!queue) {
@@ -30,7 +47,10 @@ export const getQueueStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const takeNumber = async (req: AuthRequest, res: Response) => {
+export const takeNumber = async (
+  req: TakeNumberRequest,
+  res: TakeNumberResponse,
+) => {
   try {
     const userId = req.user?.id;
     if (!userId) {
@@ -81,7 +101,10 @@ export const takeNumber = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const incrementNumber = async (req: Request, res: Response) => {
+export const incrementNumber = async (
+  req: IncrementNumberRequest,
+  res: IncrementNumberResponse,
+) => {
   try {
     let queue = await Queue.findOne().sort({ createdAt: -1 });
     if (!queue) {
@@ -116,7 +139,10 @@ export const incrementNumber = async (req: Request, res: Response) => {
   }
 };
 
-export const decrementNumber = async (req: Request, res: Response) => {
+export const decrementNumber = async (
+  req: DecrementNumberRequest,
+  res: DecrementNumberResponse,
+) => {
   try {
     let queue = await Queue.findOne().sort({ createdAt: -1 });
     if (!queue) {
@@ -147,7 +173,10 @@ export const decrementNumber = async (req: Request, res: Response) => {
   }
 };
 
-export const toggleBookings = async (req: Request, res: Response) => {
+export const toggleBookings = async (
+  req: ToggleBookingsRequest,
+  res: ToggleBookingsResponse,
+) => {
   try {
     let queue = await Queue.findOne().sort({ createdAt: -1 });
     if (!queue) {
@@ -164,7 +193,10 @@ export const toggleBookings = async (req: Request, res: Response) => {
   }
 };
 
-export const resetQueue = async (req: Request, res: Response) => {
+export const resetQueue = async (
+  req: ResetQueueRequest,
+  res: ResetQueueResponse,
+) => {
   try {
     let queue = await Queue.findOne().sort({ createdAt: -1 });
     if (!queue) {
@@ -193,7 +225,10 @@ export const resetQueue = async (req: Request, res: Response) => {
   }
 };
 
-export const getMyTicket = async (req: AuthRequest, res: Response) => {
+export const getMyTicket = async (
+  req: GetMyTicketRequest,
+  res: GetMyTicketResponse,
+) => {
   try {
     const userId = req.user?.id;
     if (!userId) {
@@ -207,7 +242,10 @@ export const getMyTicket = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const adminCreateTicket = async (req: AuthRequest, res: Response) => {
+export const adminCreateTicket = async (
+  req: AdminCreateTicketRequest,
+  res: AdminCreateTicketResponse,
+) => {
   try {
     const { customerName } = req.body;
 
@@ -243,7 +281,10 @@ export const adminCreateTicket = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getAllTickets = async (req: Request, res: Response) => {
+export const getAllTickets = async (
+  req: GetAllTicketsRequest,
+  res: GetAllTicketsResponse,
+) => {
   try {
     const tickets = await Ticket.find()
       .populate("userId", "name email")
@@ -254,7 +295,10 @@ export const getAllTickets = async (req: Request, res: Response) => {
   }
 };
 
-export const adminRemoveTicket = async (req: Request, res: Response) => {
+export const adminRemoveTicket = async (
+  req: AdminRemoveTicketRequest,
+  res: AdminRemoveTicketResponse,
+) => {
   try {
     const { ticketId } = req.params;
     const ticket = await Ticket.findById(ticketId);

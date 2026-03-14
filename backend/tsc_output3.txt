@@ -1,0 +1,4 @@
+src/controllers/auth.controller.ts(167,38): error TS18048: 'req.user' is possibly 'undefined'.
+src/types/queue.types.ts(77,18): error TS2430: Interface 'AdminRemoveTicketRequest' incorrectly extends interface 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+  Types of property 'query' are incompatible.
+    Type 'unknown' is not assignable to type 'ParsedQs'.

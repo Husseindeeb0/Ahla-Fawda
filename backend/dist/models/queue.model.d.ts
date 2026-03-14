@@ -103,13 +103,17 @@ export declare const Queue: mongoose.Model<{
 export declare const Ticket: mongoose.Model<{
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps, {}, {}, {
     id: string;
 }, mongoose.Document<unknown, {}, {
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps, {
     id: string;
 }, {
@@ -117,7 +121,9 @@ export declare const Ticket: mongoose.Model<{
 }> & Omit<{
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -129,11 +135,15 @@ export declare const Ticket: mongoose.Model<{
 }, {
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, {
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps, {
     id: string;
 }, mongoose.MergeType<mongoose.DefaultSchemaOptions, {
@@ -141,7 +151,9 @@ export declare const Ticket: mongoose.Model<{
 }>> & Omit<{
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
 } & mongoose.DefaultTimestampProps & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -154,7 +166,9 @@ export declare const Ticket: mongoose.Model<{
     [x: string]: mongoose.SchemaDefinitionProperty<any, any, mongoose.Document<unknown, {}, {
         number: number;
         status: "waiting" | "called" | "finished";
-        userId: mongoose.Types.ObjectId;
+        createdByAdmin: boolean;
+        userId?: mongoose.Types.ObjectId | null;
+        customerName?: string | null;
     } & mongoose.DefaultTimestampProps, {
         id: string;
     }, mongoose.MergeType<mongoose.DefaultSchemaOptions, {
@@ -162,7 +176,9 @@ export declare const Ticket: mongoose.Model<{
     }>> & Omit<{
         number: number;
         status: "waiting" | "called" | "finished";
-        userId: mongoose.Types.ObjectId;
+        createdByAdmin: boolean;
+        userId?: mongoose.Types.ObjectId | null;
+        customerName?: string | null;
     } & mongoose.DefaultTimestampProps & {
         _id: mongoose.Types.ObjectId;
     } & {
@@ -173,7 +189,9 @@ export declare const Ticket: mongoose.Model<{
 }, {
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
@@ -183,7 +201,9 @@ export declare const Ticket: mongoose.Model<{
 }>, {
     number: number;
     status: "waiting" | "called" | "finished";
-    userId: mongoose.Types.ObjectId;
+    createdByAdmin: boolean;
+    userId?: mongoose.Types.ObjectId | null;
+    customerName?: string | null;
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {

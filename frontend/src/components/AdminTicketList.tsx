@@ -24,8 +24,8 @@ const AdminTicketList: React.FC = () => {
 
   const filteredTickets = tickets?.filter((ticket) => {
     const isObject = ticket.userId && typeof ticket.userId === "object";
-    const userEmail = isObject ? (ticket.userId as any).email || "" : "";
-    const userName = isObject ? (ticket.userId as any).name || "" : "";
+    const userEmail = isObject ? (ticket.userId as { email?: string }).email || "" : "";
+    const userName = isObject ? (ticket.userId as { name?: string }).name || "" : "";
     const customerName = ticket.customerName || "";
     const searchLower = searchTerm.toLowerCase();
 

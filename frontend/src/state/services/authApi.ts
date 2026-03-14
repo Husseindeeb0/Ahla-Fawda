@@ -6,7 +6,11 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
 });
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+const baseQueryWithReauth = async (
+  args: Parameters<typeof baseQuery>[0],
+  api: Parameters<typeof baseQuery>[1],
+  extraOptions: Parameters<typeof baseQuery>[2],
+) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {

@@ -36,8 +36,9 @@ const AdminControls: React.FC = () => {
     try {
       setLocalError(null);
       await increment().unwrap();
-    } catch (err: any) {
-      setLocalError(err.data?.message || "فشلت عملية الزيادة");
+    } catch (err: unknown) {
+      const error = err as { data?: { message?: string } };
+      setLocalError(error.data?.message || "فشلت عملية الزيادة");
       setTimeout(() => setLocalError(null), 3000);
     }
   };
@@ -46,8 +47,9 @@ const AdminControls: React.FC = () => {
     try {
       setLocalError(null);
       await decrement().unwrap();
-    } catch (err: any) {
-      setLocalError(err.data?.message || "فشلت عملية النقصان");
+    } catch (err: unknown) {
+      const error = err as { data?: { message?: string } };
+      setLocalError(error.data?.message || "فشلت عملية النقصان");
       setTimeout(() => setLocalError(null), 3000);
     }
   };

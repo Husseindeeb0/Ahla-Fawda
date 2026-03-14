@@ -133,6 +133,9 @@ const logout = async (req, res) => {
 exports.logout = logout;
 const getMe = async (req, res) => {
     try {
+        if (!req.user?.id) {
+            return res.status(401).json({ message: "Not authenticated" });
+        }
         const user = await User_1.User.findById(req.user.id).select("-password -refreshToken");
         res.json(user);
     }

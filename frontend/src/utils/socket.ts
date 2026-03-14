@@ -10,14 +10,14 @@ export const socket = io(SOCKET_URL, {
 });
 
 // Optionally, add a helper to listen for updates
-export const subscribeToQueueUpdates = (callback: (data: any) => void) => {
+export const subscribeToQueueUpdates = <T>(callback: (data: T) => void) => {
   socket.on("queueUpdated", callback);
   return () => socket.off("queueUpdated", callback);
 };
 
-export const subscribeToTicketUpdates = (
+export const subscribeToTicketUpdates = <T>(
   userId: string,
-  callback: (data: any) => void,
+  callback: (data: T) => void,
 ) => {
   const eventName =
     userId === "all" ? "ticketUpdated:all" : `ticketUpdated:${userId}`;

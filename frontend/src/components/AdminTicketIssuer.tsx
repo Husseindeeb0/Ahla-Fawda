@@ -34,8 +34,9 @@ const AdminTicketIssuer: React.FC = () => {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
       setIsOpen(false);
-    } catch (err: any) {
-      setLocalError(err.data?.message || "فشل إنشاء التذكرة");
+    } catch (err: unknown) {
+      const error = err as { data?: { message?: string } };
+      setLocalError(error.data?.message || "فشل إنشاء التذكرة");
       setTimeout(() => setLocalError(null), 3000);
     }
   };

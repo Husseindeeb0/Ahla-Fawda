@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emitTicketUpdate = exports.emitQueueUpdate = exports.getIO = exports.initSocket = void 0;
+exports.emitTicketsUpdated = exports.emitTicketUpdate = exports.emitQueueUpdate = exports.getIO = exports.initSocket = void 0;
 const socket_io_1 = require("socket.io");
 let io;
 const initSocket = (httpServer) => {
     io = new socket_io_1.Server(httpServer, {
         cors: {
-            origin: "*", // Allow all origins for simplicity in production or use an array
+            origin: ["http://localhost:5173", "https://ahla-fawda-h.vercel.app"],
             methods: ["GET", "POST", "PATCH"],
             credentials: true,
         },
@@ -39,4 +39,10 @@ const emitTicketUpdate = (userId, data) => {
     }
 };
 exports.emitTicketUpdate = emitTicketUpdate;
+const emitTicketsUpdated = () => {
+    if (io) {
+        io.emit("ticketsUpdated");
+    }
+};
+exports.emitTicketsUpdated = emitTicketsUpdated;
 //# sourceMappingURL=socket.js.map

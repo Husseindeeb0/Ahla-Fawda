@@ -1,0 +1,38 @@
+src/controllers/queue.controller.ts(41,14): error TS2345: Argument of type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | QueueStatusPayload | undefined'.
+  Type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'QueueStatusPayload'.
+    Types of property 'createdAt' are incompatible.
+      Type 'NativeDate' is not assignable to type 'string'.
+src/controllers/queue.controller.ts(92,26): error TS2345: Argument of type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | TicketPayload | undefined'.
+  Type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'TicketPayload' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+    Types of property 'status' are incompatible.
+      Type '"waiting" | "called" | "finished"' is not assignable to type '"waiting" | "called"'.
+        Type '"finished"' is not assignable to type '"waiting" | "called"'.
+src/controllers/queue.controller.ts(122,16): error TS2345: Argument of type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | QueueStatusPayload | undefined'.
+  Type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'QueueStatusPayload'.
+    Types of property 'createdAt' are incompatible.
+      Type 'NativeDate' is not assignable to type 'string'.
+src/controllers/queue.controller.ts(158,14): error TS2345: Argument of type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | QueueStatusPayload | undefined'.
+  Type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'QueueStatusPayload'.
+    Types of property 'createdAt' are incompatible.
+      Type 'NativeDate' is not assignable to type 'string'.
+src/controllers/queue.controller.ts(175,14): error TS2345: Argument of type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | QueueStatusPayload | undefined'.
+  Type 'Document<unknown, {}, { date: NativeDate; currentNumber: number; lastIssuedNumber: number; isBookingsOpen: boolean; } & DefaultTimestampProps, { id: string; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'QueueStatusPayload'.
+    Types of property 'createdAt' are incompatible.
+      Type 'NativeDate' is not assignable to type 'string'.
+src/controllers/queue.controller.ts(218,14): error TS2345: Argument of type '(Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }) | null' is not assignable to parameter of type 'ErrorResponsePayload | TicketPayload | null | undefined'.
+  Type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'ErrorResponsePayload | TicketPayload | null | undefined'.
+    Type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'TicketPayload' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+      Types of property 'status' are incompatible.
+        Type '"waiting" | "called" | "finished"' is not assignable to type '"waiting" | "called"'.
+          Type '"finished"' is not assignable to type '"waiting" | "called"'.
+src/controllers/queue.controller.ts(254,26): error TS2345: Argument of type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to parameter of type 'ErrorResponsePayload | TicketPayload | undefined'.
+  Type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'TicketPayload' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+    Types of property 'status' are incompatible.
+      Type '"waiting" | "called" | "finished"' is not assignable to type '"waiting" | "called"'.
+        Type '"finished"' is not assignable to type '"waiting" | "called"'.
+src/controllers/queue.controller.ts(265,14): error TS2345: Argument of type '(Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; })[]' is not assignable to parameter of type 'ErrorResponsePayload | TicketPayload[] | undefined'.
+  Type '(Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; })[]' is not assignable to type 'TicketPayload[]'.
+    Type 'Document<unknown, {}, { number: number; status: "waiting" | "called" | "finished"; createdByAdmin: boolean; userId?: ObjectId | null; customerName?: string | null; } & DefaultTimestampProps, { ...; }, { ...; }> & Omit<...> & { ...; }' is not assignable to type 'TicketPayload' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+      Types of property 'status' are incompatible.
+        Type '"waiting" | "called" | "finished"' is not assignable to type '"waiting" | "called"'.
+          Type '"finished"' is not assignable to type '"waiting" | "called"'.

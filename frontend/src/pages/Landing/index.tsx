@@ -280,7 +280,7 @@ const Landing: React.FC = () => {
               {t.faqTitle}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {t.faqs.map((faq: any, idx: number) => (
+              {t.faqs.map((faq: { q: string; a: string }, idx: number) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.95 }}

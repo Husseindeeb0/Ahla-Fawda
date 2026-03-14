@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
@@ -9,8 +8,20 @@ import {
   clearTokenCookies,
   REFRESH_TOKEN_SECRET,
 } from "../utils/authUtils";
+import {
+  SignupRequest,
+  SignupResponse,
+  LoginRequest,
+  LoginResponse,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+  LogoutRequest,
+  LogoutResponse,
+  GetMeRequest,
+  GetMeResponse,
+} from "../types/auth.types";
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (req: SignupRequest, res: SignupResponse) => {
   try {
     const { name, email, password } = req.body;
 
@@ -55,17 +66,19 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: LoginRequest, res: LoginResponse) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log(`Login failed: No user found for email ${email}`);
       return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log(`Login failed: Invalid password for user ${email}`);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -98,7 +111,10 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
+export const refreshToken = async (
+  req: RefreshTokenRequest,
+  res: RefreshTokenResponse,
+) => {
   try {
     const token = req.cookies.refreshToken;
     if (!token) {
@@ -133,7 +149,7 @@ export const refreshToken = async (req: Request, res: Response) => {
   }
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req: LogoutRequest, res: LogoutResponse) => {
   try {
     const token = req.cookies.refreshToken;
     if (token) {
@@ -151,8 +167,11 @@ export const logout = async (req: Request, res: Response) => {
   }
 };
 
-export const getMe = async (req: Request & { user?: any }, res: Response) => {
+export const getMe = async (req: GetMeRequest, res: GetMeResponse) => {
   try {
+    if (!req.user?.id) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
     const user = await User.findById(req.user.id).select(
       "-password -refreshToken",
     );

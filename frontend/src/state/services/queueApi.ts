@@ -1,12 +1,24 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { QueueStatus, Ticket } from "../../types/queue";
 
+interface MinimalRootState {
+  auth?: {
+    user?: {
+      id: string;
+    };
+  };
+}
+
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_API_URL}/queue`,
   credentials: "include",
 });
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+const baseQueryWithReauth = async (
+  args: Parameters<typeof baseQuery>[0],
+  api: Parameters<typeof baseQuery>[1],
+  extraOptions: Parameters<typeof baseQuery>[2],
+) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
@@ -48,7 +60,9 @@ export const queueApi = createApi({
               Object.assign(draft, data);
             });
           });
-        } catch {}
+        } catch {
+          /* empty */
+        }
         await cacheEntryRemoved;
         socket.off("queueUpdated");
       },
@@ -75,7 +89,7 @@ export const queueApi = createApi({
           // For simplicity, we can listen for specific events if we had the ID here,
           // but better yet, let the ticket controller emit the update.
           // In a more complex app, we might store the user ID in the auth slice.
-          const userId = (getState() as any).auth?.user?.id;
+          const userId = (getState() as MinimalRootState).auth?.user?.id;
 
           if (userId) {
             socket.on(`ticketUpdated:${userId}`, (data: Ticket | null) => {
@@ -86,7 +100,9 @@ export const queueApi = createApi({
           socket.on("ticketUpdated:all", () => {
             updateCachedData(() => null);
           });
-        } catch {}
+        } catch {
+          /* empty */
+        }
         await cacheEntryRemoved;
         socket.off("ticketUpdated:all");
         // Clean up individual user listener if we had the ID
@@ -143,7 +159,9 @@ export const queueApi = createApi({
           socket.on("ticketsUpdated", () => {
             dispatch(queueApi.util.invalidateTags(["Ticket"]));
           });
-        } catch {}
+        } catch {
+          /* empty */
+        }
         await cacheEntryRemoved;
         socket.off("ticketsUpdated");
       },

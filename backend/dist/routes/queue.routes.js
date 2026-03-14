@@ -15,5 +15,8 @@ router.patch("/increment", auth_middleware_1.verifyToken, auth_middleware_1.isAd
 router.patch("/decrement", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.decrementNumber);
 router.patch("/toggle-bookings", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.toggleBookings);
 router.post("/reset", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.resetQueue);
+router.post("/admin-ticket", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.adminCreateTicket);
+router.get("/all-tickets", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.getAllTickets);
+router.delete("/ticket/:ticketId", auth_middleware_1.verifyToken, auth_middleware_1.isAdmin, queue_controller_1.adminRemoveTicket);
 exports.default = router;
 //# sourceMappingURL=queue.routes.js.map

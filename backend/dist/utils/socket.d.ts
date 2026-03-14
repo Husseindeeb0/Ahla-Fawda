@@ -4,4 +4,5 @@ export declare const initSocket: (httpServer: HttpServer) => Server<import("sock
 export declare const getIO: () => Server<import("socket.io").DefaultEventsMap, import("socket.io").DefaultEventsMap, import("socket.io").DefaultEventsMap, any>;
 export declare const emitQueueUpdate: (data: any) => void;
 export declare const emitTicketUpdate: (userId: string, data: any) => void;
+export declare const emitTicketsUpdated: () => void;
 //# sourceMappingURL=socket.d.ts.map
