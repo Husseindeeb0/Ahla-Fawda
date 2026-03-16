@@ -16,6 +16,12 @@ export const initSocket = (httpServer: HttpServer) => {
   io.on("connection", (socket: Socket) => {
     console.log(`User connected: ${socket.id}`);
 
+    // Join a private room for user-specific updates
+    socket.on("join", (userId: string) => {
+      socket.join(userId);
+      console.log(`User ${userId} joined room`);
+    });
+
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
     });
@@ -39,7 +45,11 @@ export const emitQueueUpdate = (data: any) => {
 
 export const emitTicketUpdate = (userId: string, data: any) => {
   if (io) {
-    io.emit(`ticketUpdated:${userId}`, data);
+    if (userId === "all") {
+      io.emit("ticketUpdated:all", data);
+    } else {
+      io.to(userId).emit(`ticketUpdated:${userId}`, data);
+    }
   }
 };
 

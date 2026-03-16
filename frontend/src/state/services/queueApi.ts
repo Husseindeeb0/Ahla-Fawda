@@ -82,19 +82,22 @@ export const queueApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved, getState },
       ) {
         const { socket } = await import("../../utils/socket");
+        let userListener: ((data: Ticket | null) => void) | null = null;
+        let userId: string | undefined;
+
         try {
           await cacheDataLoaded;
 
-          // Get user ID from auth state if possible or wait for the first socket event
-          // For simplicity, we can listen for specific events if we had the ID here,
-          // but better yet, let the ticket controller emit the update.
-          // In a more complex app, we might store the user ID in the auth slice.
-          const userId = (getState() as MinimalRootState).auth?.user?.id;
+          userId = (getState() as MinimalRootState).auth?.user?.id;
 
           if (userId) {
-            socket.on(`ticketUpdated:${userId}`, (data: Ticket | null) => {
+            // Tell the server to put us in our private room
+            socket.emit("join", userId);
+
+            userListener = (data: Ticket | null) => {
               updateCachedData(() => data);
-            });
+            };
+            socket.on(`ticketUpdated:${userId}`, userListener);
           }
 
           socket.on("ticketUpdated:all", () => {
@@ -105,7 +108,9 @@ export const queueApi = createApi({
         }
         await cacheEntryRemoved;
         socket.off("ticketUpdated:all");
-        // Clean up individual user listener if we had the ID
+        if (userId && userListener) {
+          socket.off(`ticketUpdated:${userId}`, userListener);
+        }
       },
     }),
 
